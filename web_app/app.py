@@ -54,10 +54,10 @@ def create():
 def audio():
     pass
 
-#show past data
-@app.route("/show", methods=['GET', 'POST'])
+@app.route("/show", methods=['GET'])
 def show():
-    pass
+    docs = db.speech_recog_DB.find({})
+    return render_template("show.html", docs=docs)
 
 @app.route("/aboutus", methods=['GET'])
 def aboutus():
