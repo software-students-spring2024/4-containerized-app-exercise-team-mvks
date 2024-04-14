@@ -10,11 +10,12 @@
     {% if docs %}
       {% for doc in docs %}
         <div class="transcription-item">
-          <h2>{{ doc.name }}</h2>
-          <p>{{ doc.description }}</p>
-          <p>Price: ${{ doc.price }}</p>
-          <p>Added on: {{ doc.created_date }}</p>
-          <p>Edited on: {{ doc.edited_date }}</p>
+            <p>Transcription: {{ doc.text }}</p>
+            <p>Added on: {{ doc.created_date }}</p>
+
+            <form action="/delete_translation/{{ doc._id }}" method="POST">
+            <button type="submit">Delete</button>
+          </form>
         </div>
             
       {% endfor %}
