@@ -1,25 +1,27 @@
-version: '3'
-
+version: '3.8'
 services:
-  mongodb:
-    image: mongo
-    ports: 
-      - "27017:27017"
+  machine_learning_client:
+    build:
+      context: ./machine_learning_client
+    volumes:
+      - ./machine_learning_client:/machine_learning_client
 
   web_app:
-    build: ./web_app
-    dockerfile: ./Dockerfile
+    build:
+      context: .
+      dockerfile: web_app/Dockerfile
     ports:
-      - "5000:5000"
+      - "4000:10001" # Assuming Flask runs on port 10001
     depends_on:
       - mongodb
-    environment:
-      FLASK_APP: web_app/app.py
 
-  machine_learning_client:
-    build: ./machine_learning_client
-    dockerfile: ./Dockerfile
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     ports:
-      - "5001:5001"
-    depends_on:
-      - mongodb
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

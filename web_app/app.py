@@ -1,7 +1,7 @@
 import os
 import datetime
 import tempfile
-from machine_learning_client import speech_recog
+import requests
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
 import speech_recognition as sr
 from bson.objectid import ObjectId
@@ -13,13 +13,21 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Set debug mode based on FLASK_ENV environment variable
 if os.getenv("FLASK_ENV", "development") == "development":
-    app.debug = True  # debug mnode
+    app.debug = True
 
+# Print MONGO_URI for debugging
 print(os.getenv("MONGO_URI"))
 
+# Connect to MongoDB
 cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
-db = cxn[os.getenv("MONGO_DBNAME")]
+
+# Ensure that MONGO_DBNAME is interpreted as a string
+db_name = str(os.getenv("MONGO_DBNAME"))
+
+# Access the MongoDB database
+db = cxn[db_name]
 
 try:
     # verify the connection works by pinging the database
@@ -37,21 +45,25 @@ def allowed_file(filename):
 
 #create -- to be implemented. (kun implemented some but not much, 
 # the one who is responsible for this part could either keep this or delete this)
+# Route to create (to be implemented)
 @app.route("/", methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
-        #audio_data = request.data
-        recognized_text = speech_recog.listen_and_recognize()
-        if recognized_text:
-            docs = {
-                "text": recognized_text,
-                "created_date": datetime.datetime.utcnow(),
-            }
-            #db.speech_recog_DB.insert_one({'text': recognized_text})
-            db.speech_recog_DB.insert_one(docs)
-            return jsonify({"status": "success", "text": recognized_text})
+        # Make HTTP request to machine learning client to perform speech recognition
+        response = requests.post("http://machine-learning-client:5000/listen_and_recognize")
+        if response.status_code == 200:
+            recognized_text = response.json().get("recognized_text")
+            if recognized_text:
+                docs = {
+                    "text": recognized_text,
+                    "created_date": datetime.datetime.utcnow(),
+                }
+                db.speech_recog_DB.insert_one(docs)
+                return jsonify({"status": "success", "text": recognized_text})
+            else:
+                return jsonify({"status": "error", "message": "Could not understand the audio."})
         else:
-            return jsonify({"status": "error", "message": "Could not understand the audio."})
+            return jsonify({"status": "error", "message": "Failed to perform speech recognition."})
     else:
         return render_template('create.html')
 

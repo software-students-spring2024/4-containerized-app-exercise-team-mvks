@@ -1,16 +1,23 @@
-FROM python:3.10
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# Set working directory
-WORKDIR /web_app
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the machine_learning_client directory into the container
+COPY machine_learning_client /usr/src/app/machine_learning_client
 
-# Copy the rest of the application code
-COPY . .
+# Install any dependencies in machine_learning_client
+RUN pip install --no-cache-dir -r machine_learning_client/requirements.txt
 
-# Expose the port your app runs on
-EXPOSE 5000 
+# Copy the web_app directory into the container
+COPY web_app /usr/src/app/web_app
 
-# Command to run the application
-CMD [ "python", "app.py" ]
+# Install any dependencies in web_app
+RUN pip install --no-cache-dir -r web_app/requirements.txt
+
+# Expose port 10001 for the application (assuming Flask runs on port 10001)
+EXPOSE 10001
+
+# Run the app
+CMD ["python", "/usr/src/app/web_app/app.py"]

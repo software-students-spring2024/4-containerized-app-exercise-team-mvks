@@ -1,6 +1,6 @@
 import speech_recognition as sr
 
-#The listen_and_recognize function will only 
+
 def listen_and_recognize():
     recognizer = sr.Recognizer()
 
