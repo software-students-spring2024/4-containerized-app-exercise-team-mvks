@@ -18,7 +18,6 @@
      <script>
         
         function startRecording() {
-            // You can add any logic here if needed before starting recording
             fetch('/', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
@@ -26,6 +25,49 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        function stopRecording() {
+            fetch('/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('transcription').textContent = data.text;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function saveAudio() {
+            fetch('/save', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById
+
+        ('audio').src = data.url;
+
+                    document.getElementById('save-audio-btn').style.display = 'none';
+                    document.getElementById('recording-instructions').textContent = 'Audio saved successfully';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function saveText() {
+            const text = document.getElementById('transcription').textContent;
+            fetch('/save-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text-editor').textContent = data.text;
+                    document.getElementById('save-text-btn').style.display = 'none';
+                    document.getElementById('transcription').textContent = 'Text saved successfully';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        
 
         
 
