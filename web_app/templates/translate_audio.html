@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1>Transcribe Audio</h1>
-
+    <h5> accept ONLY .wav and .flac files </h5>
     <form action="/audio" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="audio/*" required>
         <button type="submit">Translate</button>
