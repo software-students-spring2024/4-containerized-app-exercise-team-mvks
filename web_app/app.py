@@ -2,7 +2,7 @@ import os
 import datetime
 import tempfile
 
-from machine_learning_client import speech_recog
+#from machine_learning_client import speech_recog
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
 import speech_recognition as sr
 from bson.objectid import ObjectId
@@ -42,7 +42,18 @@ def allowed_file(filename):
 def create():
     if request.method == 'POST':
         #audio_data = request.data
-        recognized_text = speech_recog.listen_and_recognize()
+        #recognized_text = speech_recog.listen_and_recognize()
+        recognizer = sr.Recognizer()
+        with sr.Microphone() as source:
+            try:
+                audio = recognizer.listen(source)
+                text = recognizer.recognize_google(audio)
+                recognized_text = text
+
+            except sr.RequestError as e:
+                #return None
+                return render_template('create.html', error_message="Could not understand the audio.")
+                
         if recognized_text:
             docs = {
                 "text": recognized_text,
