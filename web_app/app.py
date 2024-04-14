@@ -18,8 +18,6 @@ print(os.getenv("MONGO_URI"))
 cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
 db = cxn[os.getenv("MONGO_DBNAME")]
 
-
-
 try:
     # verify the connection works by pinging the database
     cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
@@ -39,15 +37,20 @@ def allowed_file(filename):
 @app.route("/", methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
+        #audio_data = request.data
         recognized_text = speech_recog.listen_and_recognize()
         if recognized_text:
+            docs = {
+                "text": recognized_text,
+                "created_date": datetime.datetime.utcnow(),
+            }
+            #db.speech_recog_DB.insert_one({'text': recognized_text})
+            db.speech_recog_DB.insert_one(docs)
             return jsonify({"status": "success", "text": recognized_text})
         else:
             return jsonify({"status": "error", "message": "Could not understand the audio."})
     else:
         return render_template('create.html')
-
-
 
 #audio handler - to be implemented
 @app.route("/audio", methods=['GET', 'POST'])
@@ -62,6 +65,23 @@ def show():
 @app.route("/aboutus", methods=['GET'])
 def aboutus():
     return render_template("aboutus.html")
+
+@app.route("/delete_translation/<t_id>", methods=["POST"])
+def delete_translation(t_id):
+    if request.method == "POST":
+        # Convert t_id to ObjectId
+        t_id = ObjectId(t_id)
+        
+        # Find the document with the given _id
+        existing_translation = db.speech_recog_DB.find_one({"_id": t_id})
+        
+        # If the document exists, delete it
+        if existing_translation:
+            db.speech_recog_DB.delete_one({"_id": t_id})
+        
+        return redirect(url_for("show"))
+    else:
+        return render_template("show.html")
 
 if __name__ == "__main__":
     # use the PORT environment variable, or default to 5000
