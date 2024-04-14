@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: web_app/Dockerfile
     ports:
-      - "4000:10001" # Assuming Flask runs on port 10001
+      - "4000:10001"
     depends_on:
       - mongodb
 
