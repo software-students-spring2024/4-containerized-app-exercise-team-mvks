@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Translate Audio</h1>
+    <form action="/audio" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="audio/*" required>
+        <button type="submit">Translate</button>
+    </form>
+
+    {% if recognized_text %}
+        <p>Translated Text: {{ recognized_text }}</p>
+    {% endif %}
+{% endblock %}
