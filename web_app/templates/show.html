@@ -6,10 +6,10 @@
     <div class="subtitle">Current Available Transcriptions</div>
   </div>
   
-<section class="transcription-listing">
+<section class="translation-listing">
     {% if docs %}
       {% for doc in docs %}
-        <div class="transcription-item">
+        <div class="translation-item">
             <p>Transcription: {{ doc.text }}</p>
             <p>Added on: {{ doc.created_date }}</p>
 
