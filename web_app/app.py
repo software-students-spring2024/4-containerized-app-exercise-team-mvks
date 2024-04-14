@@ -1,10 +1,13 @@
 import os
 import datetime
 import tempfile
-import sys
-#from machine_learning_client import speech_recog
-import speech_recognition as sr
+
+from machine_learning_client import speech_recog
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
+import speech_recognition as sr
+from bson.objectid import ObjectId
+from bson import ObjectId
+
 import pymongo
 from dotenv import load_dotenv
 
@@ -59,6 +62,7 @@ def create():
 def audio():
     if request.method == 'POST':
         if 'file' not in request.files:
+
             return redirect(request.url)
         file = request.files['file']
         if file.filename == '':
@@ -86,6 +90,7 @@ def add_to_database():
         }
         db.speech_recog_DB.insert_one(docs)
         return redirect(url_for('show'))
+
 
 @app.route("/show", methods=['GET'])
 def show():

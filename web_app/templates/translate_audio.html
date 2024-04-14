@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <h1>Transcribe Audio</h1>
+
     <form action="/audio" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="audio/*" required>
         <button type="submit">Translate</button>
     </form>
 
     {% if recognized_text %}
+
         <p>Transcription: </p>
         <textarea readonly rows="4" cols="50">{{ recognized_text }}</textarea><br>
         <form action="/add_to_database" method="POST">
@@ -17,5 +20,6 @@
     {% endif %}
     {% if error_message %}
         <p>Error: {{ error_message }}</p>
+
     {% endif %}
 {% endblock %}

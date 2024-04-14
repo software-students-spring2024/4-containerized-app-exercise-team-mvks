@@ -1,0 +1,7 @@
+SpeechRecognition
+Flask
+pymongo
+pylint
+pytest
+python-dotenv
+
