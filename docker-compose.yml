@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web_app:
+    environment:
+      FLASK_APP: web_app/app.py
+    build: ./web_app
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mongodb
+      - machine_learning_client
+
+  mongodb:
+    image: mongo
+    ports: 
+      - "27017:27017"
+
+  machine_learning_client:
+    build: ./machine_learning_client
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
