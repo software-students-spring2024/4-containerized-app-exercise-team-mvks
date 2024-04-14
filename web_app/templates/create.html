@@ -3,11 +3,17 @@
 {% block content %}
     <h1>New Translation</h1>
     <button id="start-record-btn" onclick="startRecording()">Start Recording</button>
+    <button id="stop-record-btn" onclick="stopRecording()">Stop Recording</button>
+    <button id="save-audio-btn" onclick="saveAudio()" style="display:none;">Save Audio</button>
+    <audio id="audio" controls></audio>
+    <p id="recording-instructions">Press the 'Start Recording' button to record and 'Stop Recording' to stop</p>
+    
+
 
     <p id="transcription">Transcription will appear here...</p>
     <textarea id="text-editor" style="display:none;"></textarea>
 
-    <button id="save-text-btn" onclick="saveText()" style="display:none;">Save to Database</button>
+    <button id="save-text-btn" onclick="saveText()">Save to Database</button>
 
      <script>
         
@@ -20,6 +26,10 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        
+
+        
 
     </script>
     
