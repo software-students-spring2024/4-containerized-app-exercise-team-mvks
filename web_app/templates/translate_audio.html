@@ -8,6 +8,16 @@
     </form>
 
     {% if recognized_text %}
-        <p>Translated Text: {{ recognized_text }}</p>
+        <p>Translated Text:</p>
+        <textarea name="edited_text" rows="4" cols="50">{{ recognized_text }}</textarea><br>
+        <form action="/add_to_database" method="POST">
+            <label for="transcription_name">Transcription Name:</label>
+            <input type="text" id="transcription_name" name="transcription_name" required><br>
+            <input type="hidden" name="transcription" value="{{ recognized_text }}">
+            <button type="submit">Add to Database</button>
+        </form>
+    {% endif %}
+    {% if error_message %}
+        <p>Error: {{ error_message }}</p>
     {% endif %}
 {% endblock %}
