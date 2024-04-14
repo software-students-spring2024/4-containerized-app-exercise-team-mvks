@@ -1,11 +1,13 @@
 import os
 import datetime
 import tempfile
+
 from machine_learning_client import speech_recog
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
 import speech_recognition as sr
 from bson.objectid import ObjectId
 from bson import ObjectId
+
 import pymongo
 from dotenv import load_dotenv
 
@@ -60,35 +62,35 @@ def create():
 def audio():
     if request.method == 'POST':
         if 'file' not in request.files:
-            return jsonify({"status": "error", "message": "No file part"})
 
+            return redirect(request.url)
         file = request.files['file']
-
         if file.filename == '':
-            return jsonify({"status": "error", "message": "No selected file"})
-
+            return redirect(request.url)
         if file and allowed_file(file.filename):
-            # Save the uploaded file to a temporary location
-            temp_audio = tempfile.NamedTemporaryFile(delete=False)
-            file.save(temp_audio.name)
-
             recognizer = sr.Recognizer()
-            with sr.AudioFile(temp_audio.name) as source:
-                audio_data = recognizer.record(source)  # Record the entire audio file
+            with sr.AudioFile(file) as audio_file:
+                try:
+                    audio_data = recognizer.record(audio_file)
+                    recognized_text = recognizer.recognize_google(audio_data)
+                    return render_template('translate_audio.html', recognized_text=recognized_text)
+                except sr.UnknownValueError:
+                    return render_template('translate_audio.html', error_message="Could not understand the audio.")
+                except sr.RequestError:
+                    return render_template('translate_audio.html', error_message="Could not request results; check your internet connection.")
+    return render_template('translate_audio.html')
 
-            try:
-                recognized_text = recognizer.recognize_google(audio_data)
-                return render_template("translate_audio.html", recognized_text=recognized_text)
-                #return jsonify({"status": "success", "text": recognized_text})
-            except sr.UnknownValueError:
-                return jsonify({"status": "error", "message": "Unable to recognize the audio"})
-            except sr.RequestError as e:
-                return jsonify({"status": "error", "message": "Google Speech Recognition service error"})
+@app.route("/add_to_database", methods=['POST'])
+def add_to_database():
+    if request.method == 'POST':
+        transcription_text = request.form['transcription']
+        docs = {
+            "text": transcription_text,
+            "created_date": datetime.utcnow(),
+        }
+        db.speech_recog_DB.insert_one(docs)
+        return redirect(url_for('show'))
 
-        else:
-            return jsonify({"status": "error", "message": "Invalid file type"})
-    else: 
-        return render_template('translate_audio.html')
 
 @app.route("/show", methods=['GET'])
 def show():
