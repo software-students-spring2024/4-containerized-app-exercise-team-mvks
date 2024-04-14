@@ -5,6 +5,7 @@
     <button id="start-record-btn" onclick="startRecording()">Start Recording</button>
     <button id="stop-record-btn" onclick="stopRecording()">Stop Recording</button>
     <button id="save-audio-btn" onclick="saveAudio()" style="display:none;">Save Audio</button>
+    <audio id="audio" controls></audio>
     <p id="recording-instructions">Press the 'Start Recording' button to record and 'Stop Recording' to stop</p>
     
 
@@ -26,37 +27,7 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        function stopRecording() {
-            fetch('/stop', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('transcription').textContent = data.text;
-                    document.getElementById('text-editor').value = data.text;
-                    document.getElementById('save-text-btn').style.display = 'block';
-                    document.getElementById('stop-record-btn').style.display = 'none';
-                    document.getElementById('start-record-btn').style.display = 'none';
-                    document.getElementById('recording-instructions').style.display = 'none';
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-
-
-        function saveText() {
-            const text = document.getElementById('text-editor').value;
-            fetch('/save-text', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                })
-                .catch(error => console.error('Error:', error));
-        }
+        
 
         
 
