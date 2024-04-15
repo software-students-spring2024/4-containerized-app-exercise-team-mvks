@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose any necessary ports (if needed)
-EXPOSE 5000
+EXPOSE 5001
 
 # Command to run the application
 CMD [ "python", "speech_recog.py" ]
