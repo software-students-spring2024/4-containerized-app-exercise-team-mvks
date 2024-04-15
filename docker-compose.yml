@@ -17,6 +17,7 @@ services:
       - "27017:27017"
 
   machine_learning_client:
+    command: tail -f /dev/null
     build: ./machine_learning_client
     ports:
       - "5001:5001"
