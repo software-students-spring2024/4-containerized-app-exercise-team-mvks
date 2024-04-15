@@ -7,6 +7,8 @@ name = "pypi"
 pylint = "*"
 black = "*"
 SpeechRecognition = "*"
+flask = "*"
+pymongo = "*"
 
 [dev-packages]
 

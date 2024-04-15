@@ -34,8 +34,7 @@ def allowed_file(filename):
 def create():
     if request.method == 'POST':
         # Make HTTP request to machine learning client to perform speech recognition
-        #response = requests.post("http://machine_learning_client:1000/listen_and_recognize")
-        response = requests.post("/listen_and_recognize")
+        response = requests.post("http://mlclient:1000/listen_and_recognize",timeout=10)
         if response.status_code == 200:
             recognized_text = response.json().get("recognized_text")
             if recognized_text:

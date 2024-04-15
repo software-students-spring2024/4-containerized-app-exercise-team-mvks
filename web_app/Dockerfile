@@ -5,15 +5,15 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy the machine_learning_client directory into the container
-COPY requirements.txt ./
-RUN pip3 install -r requirements.txt
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-ADD . .
+ADD . /app
 
 
 
 EXPOSE 5001
 
-ENV NAME World
+ENV NAME WebApp
 # Run the app
-CMD ["python", "app.py"]
+CMD ["python", "app.py", "--host=0.0.0.0", "--port=5001"]
