@@ -1,25 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>New Translation</h1>
+    <h1>New Transcription</h1>
     <button id="start-record-btn" onclick="startRecording()">Start Recording</button>
+    <button id="stop-record-btn" onclick="stopRecording()">Stop Recording</button>
+    <button id="save-audio-btn" onclick="saveAudio()" style="display:none;">Save Audio</button>
+    <audio id="audio" controls></audio>
+    <p id="recording-instructions">Press the 'Start Recording' button to record and 'Stop Recording' to stop</p>
+    
+
 
     <p id="transcription">Transcription will appear here...</p>
     <textarea id="text-editor" style="display:none;"></textarea>
 
-    <button id="save-text-btn" onclick="saveText()" style="display:none;">Save to Database</button>
+    <button id="save-text-btn" onclick="saveText()">Save to Database</button>
 
      <script>
         
         function startRecording() {
-            // You can add any logic here if needed before starting recording
             fetch('/', { method: 'POST' })
+                
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('transcription').textContent = data.text;
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        function stopRecording() {
+            fetch('/stop', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('transcription').textContent = data.text;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function saveAudio() {
+            fetch('/save', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById
+
+        ('audio').src = data.url;
+
+                    document.getElementById('save-audio-btn').style.display = 'none';
+                    document.getElementById('recording-instructions').textContent = 'Audio saved successfully';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function saveText() {
+            const text = document.getElementById('transcription').textContent;
+            fetch('/save-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('text-editor').textContent = data.text;
+                    document.getElementById('save-text-btn').style.display = 'none';
+                    document.getElementById('transcription').textContent = 'Text saved successfully';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        
+
+        
+
+        
 
     </script>
     
