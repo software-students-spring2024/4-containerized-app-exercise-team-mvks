@@ -6,36 +6,20 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 import speech_recognition as sr
 from bson.objectid import ObjectId
 from bson import ObjectId
-import pymongo
-from dotenv import load_dotenv
+from pymongo import MongoClient
 
-load_dotenv()
 
 app = Flask(__name__)
+client = MongoClient('mongodb://mongo:27017/')
+db = client.speech
+status_collection = db.speech_recog_DB
+
+
 
 # Set debug mode based on FLASK_ENV environment variable
 if os.getenv("FLASK_ENV", "development") == "development":
     app.debug = True
 
-# Print MONGO_URI for debugging
-print(os.getenv("MONGO_URI"))
-
-# Connect to MongoDB
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
-
-# Ensure that MONGO_DBNAME is interpreted as a string
-db_name = str(os.getenv("MONGO_DBNAME"))
-
-# Access the MongoDB database
-db = cxn[db_name]
-
-try:
-    # verify the connection works by pinging the database
-    cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
-    print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
-except Exception as e:
-    # the ping command failed, so the connection is not available.
-    print(" * MongoDB connection error:", e)  # debug
 
 
 ALLOWED_EXTENSIONS = {'mp3', 'wav', 'ogg', 'flac', 'aac'}
@@ -50,7 +34,8 @@ def allowed_file(filename):
 def create():
     if request.method == 'POST':
         # Make HTTP request to machine learning client to perform speech recognition
-        response = requests.post("http://machine-learning-client:5000/listen_and_recognize")
+        #response = requests.post("http://machine_learning_client:1000/listen_and_recognize")
+        response = requests.post("/listen_and_recognize")
         if response.status_code == 200:
             recognized_text = response.json().get("recognized_text")
             if recognized_text:
@@ -129,10 +114,5 @@ def delete_translation(t_id):
         return render_template("show.html")
 
 if __name__ == "__main__":
-    # use the PORT environment variable, or default to 5000
-    FLASK_PORT = os.getenv("FLASK_PORT", "5000")
-
-    # import logging
-    # logging.basicConfig(filename='/home/ak8257/error.log',level=logging.DEBUG)
-    app.run(port=FLASK_PORT)
+    app.run(host='0.0.0.0', port=5001, debug=True)
 
