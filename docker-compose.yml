@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  mlclient:
+    build: ./machine_learning_client
+    ports:
+      - '1000:1000'
+    depends_on:
+      - db
+    volumes:
+      - audio_data:/app/audio
+
+  web_app:
+    build: ./web_app
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+      - mlclient
+    volumes:
+      - audio_data:/app/audio
+      - ./asound.conf:/etc/asound.conf
+    devices:
+      - "/dev/snd:/dev/snd"
+    privileged: true
+    
+
+  db:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
+  audio_data:
