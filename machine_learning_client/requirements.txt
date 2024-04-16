@@ -3,3 +3,7 @@ pymongo
 pytest
 python-dotenv
 SpeechRecognition
+pylint
+pytest
+
+

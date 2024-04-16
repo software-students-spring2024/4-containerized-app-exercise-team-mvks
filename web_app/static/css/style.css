@@ -1,112 +1,133 @@
-
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #000000; 
-    color: #ffffff;
-  }
-  
-  .container {
-    border: 3px solid #000000;;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #000000;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-  
-  
-  header {
-    display: flex;
-    flex-direction: row;
-    gap: 10em; 
-    justify-content: space-between; 
-    align-items: center; 
-    background-color: #000000;
-    color: #ffffff;
-  }
-  
-  .logo {
-    font-size: 50px; 
-    color: #9700d2; 
-    margin: 0;
-  }
-  
-  nav a {
-    color: #cccccc;
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  footer {
-    color: white;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-    padding: 20px; 
-  }
 
-  .subtitle {
-    font-size: 24px; 
-    color: #a69d9d;
-    font-weight: bold; 
-    margin-top: 10px; 
-    text-transform: uppercase; 
-    font-style: italic;
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f8f8; /* off-white background */
+  color: #0d0d7f; /* black text */
+}
 
-  .text {
-    color: #ffffff;
-  }
+.container {
+  border: 3px solid #f8f8f8;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f8f8f8; /* off-white background for container too */
+  padding: 20px;
+  box-shadow: 0 4px 6px #f8f8f8;
+  text-align: center;
+}
 
-  button {
-      padding: 10px 20px; 
-      font-size: 18px; 
-      margin: 10px 0; 
-  }
+header {
+  display: flex;
+  flex-direction: row;
+  gap: 10em;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8; /* keeping header background black */
+  color: #ffffff; /* keeping header text white */
+}
 
-  form {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    width: 100%; 
-    margin-top: 20px; 
-  }
+
+.logo {
+  font-size: 50px;
+  color: #0d0d7f; /* blue color for the logo */
+  font-weight: bold;
+  margin: 0;
+}
+
+nav a {
+  display: inline-block; /* Allows padding and other block properties */
+  padding: 10px 15px; /* Adds space inside the links to make them look like buttons */
+  color: white; /* Soft blue for text */
+  background-color: #518df5; /* Very light blue for button background */
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+  border: none; /* Slightly darker border for depth */
+  border-radius: 20px; /* Rounded corners for a bubbly effect */
+}
+nav a:hover {
+  background-color: rgb(132, 213, 132); /* Changes color to green on hover */
+  border: 2px, solid, #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+  color: #535353;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.subtitle {
+  font-size: 24px;
+  color: #a69d9d;
+  font-weight: bold;
+  margin-top: 10px;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.text {
+  color: #0d0d7f;; /* ensuring other texts are black as needed */
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 10px 0;
+  background-color: #518df5; /* light blue background for buttons */
+  border: none; /* Removing default border */
+  border-radius: 25px; /* Rounded corners */
+  color: white; /* black text for buttons */
+}
+button:hover {
+  background-color: rgb(132, 213, 132); /* Changes background to green on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect on hover */
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
 
 .translation-listing {
-  color: #000000;
+  color: #0d0d7f;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; 
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .translation-item {
-  color: #000000;
-  flex: 0 0 calc(20% - 20px); 
+  color: #0d0d7f;;
+  flex: 0 0 calc(20% - 20px);
   margin-bottom: 20px;
-  padding: 10px; 
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* very light background for translation items */
   text-align: center;
 }
 
 @media screen and (max-width: 800px) {
-    .box{
-        position: static;
-        width: 100%;
-    }
-    form{
-        width: 100%;
-    }
+  .box {
+      position: static;
+      width: 100%;
+  }
+  form {
+      width: 100%;
+  }
 }
+
 

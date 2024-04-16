@@ -64,18 +64,12 @@ def create():
 def audio():
     if request.method == 'POST':
         if 'file' not in request.files:
-            return jsonify({"status": "error", "message": "No file part"})
 
+            return redirect(request.url)
         file = request.files['file']
-
         if file.filename == '':
-            return jsonify({"status": "error", "message": "No selected file"})
-
+            return redirect(request.url)
         if file and allowed_file(file.filename):
-            # Save the uploaded file to a temporary location
-            temp_audio = tempfile.NamedTemporaryFile(delete=False)
-            file.save(temp_audio.name)
-
             recognizer = sr.Recognizer()
             with sr.AudioFile(temp_audio.name) as source:
                 audio_data = recognizer.record(source)  # Record the entire audio file
@@ -97,6 +91,18 @@ def audio():
             return jsonify({"status": "error", "message": "Invalid file type"})
     else: 
         return render_template('translate_audio.html')
+
+@app.route("/add_to_database", methods=['POST'])
+def add_to_database():
+    if request.method == 'POST':
+        transcription_text = request.form['transcription']
+        docs = {
+            "text": transcription_text,
+            "created_date": datetime.utcnow(),
+        }
+        db.speech_recog_DB.insert_one(docs)
+        return redirect(url_for('show'))
+
 
 @app.route("/show", methods=['GET'])
 def show():
