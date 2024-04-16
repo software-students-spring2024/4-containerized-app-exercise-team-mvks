@@ -81,7 +81,11 @@ def audio():
                 audio_data = recognizer.record(source)  # Record the entire audio file
 
             try:
-                recognized_text = recognizer.recognize_google(audio_data)
+                payload = {
+                "audio_data": audio_data
+            }
+                
+                recognized_text = requests.post("http://mlclient:1000/listen_and_recognize",json=payload,timeout=10)
                 return render_template("translate_audio.html", recognized_text=recognized_text)
                 #return jsonify({"status": "success", "text": recognized_text})
             except sr.UnknownValueError:

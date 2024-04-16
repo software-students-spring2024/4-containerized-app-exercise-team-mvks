@@ -31,6 +31,21 @@ def audio_data_handler(recognizer, audio):
 
     except sr.RequestError as e:
         return None
+    
+@app.route("/process", methods=["POST"])    
+def audio_process():
+    data = request.json
+    audio_data["audio_data"]
+    recognizer = sr.Recognizer()
+
+    try:
+        audio_data = sr.AudioData(audio_data, sample_rate=16000)
+        transcribed_text = recognizer.recognize_google(audio_data)
+        return transcribed_text
+    except sr.UnknownValueError:
+        return None
+    except sr.RequestError as e:
+        return "Request Denied"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=1000,debug=True)
