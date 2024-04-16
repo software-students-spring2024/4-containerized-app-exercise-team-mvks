@@ -15,7 +15,7 @@ This project contains a mongodb database, a backend machine learning client to t
 ## How To Run
 Open a new terminal window, and run `docker compose up --build`
 
-navigate to http://127.0.0.1:5000
+navigate to http://127.0.0.1:5001
 
 
 ## Task board
