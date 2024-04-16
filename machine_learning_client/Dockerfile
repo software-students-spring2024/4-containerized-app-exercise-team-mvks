@@ -4,11 +4,9 @@ FROM python:3.10
 # Set working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    tesseract-ocr \
-    libtesseract-dev \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y portaudio19-dev alsa-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 
 # Install necessary system dependencies

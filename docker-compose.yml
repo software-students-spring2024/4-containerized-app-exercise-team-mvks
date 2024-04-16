@@ -8,6 +8,8 @@ services:
 
     depends_on:
       - db
+    volumes:
+      - audio_data:/app/audio
 
   web_app:
     build: ./web_app
@@ -16,6 +18,8 @@ services:
     depends_on:
       - db
       - mlclient
+    volumes:
+      - audio_data:/app/audio
 
   db:
     image: mongo:latest
@@ -26,3 +30,4 @@ services:
 
 volumes:
   mongodb_data_container:
+  audio_data:

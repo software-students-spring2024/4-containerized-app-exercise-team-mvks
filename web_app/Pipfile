@@ -10,6 +10,7 @@ flask = "*"
 pymongo = "*"
 python-dotenv = "==0.16.0"
 SpeechRecognition = "*"
+pyaudio = "*"
 
 
 [dev-packages]
