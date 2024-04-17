@@ -11,7 +11,8 @@ pymongo = "*"
 python-dotenv = "==0.16.0"
 SpeechRecognition = "*"
 pyaudio = "*"
-
+pytest = "*"
+pytest-flask = "*"
 
 [dev-packages]
 

@@ -71,7 +71,7 @@ def audio():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             recognizer = sr.Recognizer()
-            with sr.AudioFile(temp_audio.name) as source:
+            with sr.AudioFile(file) as source:
                 audio_data = recognizer.record(source)  # Record the entire audio file
 
             try:
@@ -98,7 +98,7 @@ def add_to_database():
         transcription_text = request.form['transcription']
         docs = {
             "text": transcription_text,
-            "created_date": datetime.utcnow(),
+            "created_date": datetime.datetime.utcnow(),
         }
         db.speech_recog_DB.insert_one(docs)
         return redirect(url_for('show'))
